@@ -4,8 +4,11 @@ def handle_request(client_socket):
     # Read the request
     request = client_socket.recv(1024)
     print('Client request: ', request)
-    # Send a response
-    client_socket.sendall(b"HTTP/1.1 200 OK\r\n\r\n")
+    path = request.split()[1]
+    if path == b'/':
+        client_socket.sendall(b"HTTP/1.1 200 OK\r\n\r\n")
+    else:
+        client_socket.sendall(b"HTTP/1.1 404 Not Found\r\n\r\n")
 
 def main():
     server_socket = socket.create_server(("localhost", 4221), reuse_port=True)
